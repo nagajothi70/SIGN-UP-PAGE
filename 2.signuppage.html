@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .container
+        {
+            background-color: aqua;
+            padding: 20px 20px;
+            width: 400px;
+            margin: 70px auto;
+            border-radius: 20px;
+            text-align: center;
+        }
+        input
+        {
+            height: 50px;
+            padding-left: 2rem;
+            border-radius: 25px;
+            border: none;
+            width: 80%;
+            font-size: 1rem;
+            margin: 10px 10px;
+        }
+
+        #account_btn:hover
+        {
+            background-color: blueviolet;
+            color: white;
+        }
+        #account_btn:active
+        {
+            background-color:red;
+            color: white;
+            ;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Create a New Account</h1>
+        <form method="post" action="" name="contact-form">
+            <input type="text" name="your-roll" placeholder="Register Number">
+            <input type="email" name="your-email" placeholder="Email">
+            <input type="password" name="your-pass" placeholder="Password">
+            <input type="submit"  id="account_btn" value="Create Account" id="submit">
+        </form>
+    </div>
+
+    <script>
+        const form = document.forms['contact-form'];
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbzPqLy9_CkuaU4n1vXwg6aupyfDGgp618tvQ67gL0dStt4y4QzbUZn94PTeIWYcUU6o/exec';
+
+        form.addEventListener('submit', e => {
+            e.preventDefault(); // Prevent form submission
+
+            fetch(scriptURL, {
+                method: 'POST',
+                body: new FormData(form)
+            })
+            .then(response => response.json())
+            .then(result => {
+                if (result.result === 'success') {
+                    // Optionally redirect after successful submission
+                     window.location.href = '1.loginpage.html';
+                } else {
+                    alert('Submission failed: ' + result.error);
+                }
+            })
+            .catch(error => {
+                console.error('Error!', error.message);
+            });
+
+            // Correct URL to fetch sheet data
+            const sheetDataURL = 'https://docs.google.com/spreadsheets/d/1IBAcgXjGW3HK4ZSnHdYr6pZG2MQFabeSNSYva9KNdUM/edit?gid=0#gid=0'; 
+
+            fetch(sheetDataURL)
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Sheet Data:', data);
+                    displaySheetData(data);
+                })
+                .catch(error => console.error('Error fetching sheet data:', error));
+
+                alert("Account Created")
+
+        });
+
+    </script>
+</body>
+</html>
